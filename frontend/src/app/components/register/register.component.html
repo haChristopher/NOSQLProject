@@ -1,0 +1,24 @@
+<div style="width:400px">
+    <p class="title">
+        Registriere dich im HS Mannheim Chatroom.
+    </p>
+    <div>
+        <div class="row">
+            <div class="input-field">
+                <input [(ngModel)]="user.username" id="email" type="text" validate>
+                <label for="username">Benutzername</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <input [(ngModel)]="user.password" id="password" type="password" class="validate">
+                <label for="password">Passwort</label>
+            </div>
+        </div>
+
+        <button (click)="register()" type="submit" name="action">Registrieren</button>
+        <br><br>
+        <p *ngIf="error" style="margin-bottom:0; color:#bb2b2b">Login fehlgeschlagen.</p>
+    </div>
+</div>
