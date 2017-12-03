@@ -9,7 +9,6 @@ import { CreateChannelComponent } from '../modals/create-channel.component';
 })
 export class ChatroomComponent {
 
-  
   private createChannel(){
 
   }
