@@ -35,8 +35,12 @@
     height: 100%;
 }
 
+#conversation{
+  overflow-y:scroll; 
+}
+
 #chatroom_chat_messages {
-    height: 450px;
+    margin:0px;
 }
 
 #chatroom_chat_input{
