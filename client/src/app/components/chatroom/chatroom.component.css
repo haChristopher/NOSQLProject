@@ -36,11 +36,18 @@
 }
 
 #conversation{
-  overflow-y:scroll; 
+  overflow-y:scroll;
 }
 
 #chatroom_chat_messages {
-    margin:0px;
+    border: 2px solid;
+    border-color: #ccc;
+    background-color: lightblue;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    float: right;
+    color: black;
 }
 
 #chatroom_chat_input{
@@ -58,4 +65,8 @@
 #chatroom_chat_input:focus{
     outline: none;
     box-shadow: 0 0 0 0;
+}
+
+#messsagefield{
+    text-align: left;
 }

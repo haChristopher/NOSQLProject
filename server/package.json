@@ -2,10 +2,10 @@
   "name": "socket-server",
   "version": "0.0.1",
   "description": "chat-server",
-  "main": "server.js",
+  "main": "socketio.js",
   "scripts": {
     "test": "test",
-    "start": "node server.js"
+    "start": "node socketio.js"
   },
   "repository": {
     "type": "git",
