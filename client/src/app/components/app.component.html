@@ -11,7 +11,7 @@
         <ul>
           <li *ngIf="!isLoggedIn()"><a [routerLink]="['login']">Einloggen</a></li>
           <li *ngIf="!isLoggedIn()"><a [routerLink]="['register']">Registrieren</a></li>
-          <li *ngIf="isLoggedIn()"><a style="cursor:pointer" [routerLink]="['home']" (click)="logout()">Logout</a></li>
+          <li *ngIf="isLoggedIn()"><a style="cursor:pointer" [routerLink]="['home']" (click)="logout()">Ausloggen</a></li>
         </ul>
       </nav>
     </div>
