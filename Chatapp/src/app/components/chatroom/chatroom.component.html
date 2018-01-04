@@ -22,8 +22,8 @@
       <div id="conversation" class="row" style="height:90%">
         <label style="margin-top:15px">{{activeChannel?.name}}</label>
         <div *ngFor="let message of activeChannel?.conversation" [ngClass]="{'col-xs-6': true, 'pull-left': !isOwnMessage(message), 'pull-right': isOwnMessage(message)}" id="chatroom_chat_messages">
-          <span *ngIf="!isOwnMessage(message) && message.status == 'read'" class="fa fa-check"></span>
-          <span id="userfield" style="font-weight:bold">{{message.sender.username}}</span>
+          <span *ngIf="isOwnMessage(message) && message.status == 'read'" class="fa fa-check"></span>
+          <span id="userfield" style="font-weight:bold">{{message.sender}}</span>
           <span id="messsagefield" >{{message.message}}</span>
           <span id="timeField"></span>
         </div>

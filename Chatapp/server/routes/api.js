@@ -6,12 +6,12 @@ const ObjectID = require('mongodb').ObjectID;
 
 // Connect
 const connection = (closure) => {
-return MongoClient.connect('mongodb://localhost:27017/chat', (err, client) => {
-if (err) return console.log(err);
+    return MongoClient.connect('mongodb://localhost:27017/chat', (err, client) => {
+        if (err) return console.log(err);
 
-let db = client.db('chat');
-closure(db);
-});
+        let db = client.db('chat');
+        closure(db);
+    });
 };
 
 // Error handling
@@ -34,6 +34,34 @@ router.get('/channels', (req, res) => {
         db.collection('channels')
             .find()
             .toArray()
+            .then((channels) => {
+                response.data = channels;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
+// Post Message
+router.post('/message', (req, res) => {
+    console.log(req.body)
+    connection((db) => {
+        db.collection('channels')
+            .update({ "_id": ObjectID(req.body._channel) },
+            {
+                "$push":
+                {
+                    "conversation":
+                    {
+                        "sender": req.body._sender,
+                        "message": req.body._message,
+                        "status": "unread"
+                    }
+                }
+            }
+            )
             .then((channels) => {
                 response.data = channels;
                 res.json(response);

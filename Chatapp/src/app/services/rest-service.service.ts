@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { Channel } from '../models/channel'
+import { Channel } from '../models/channel';
+import { Message } from '../models/message'
 
 
 @Injectable()
@@ -14,6 +15,10 @@ export class RestService {
 
     public getChannels() {
         return this.get("/api/channels");
+    }
+
+    public writeMessage(message: Message) {
+        return this.post("/api/message", message);
     }
 
     private get(path: string): Observable<any> {

@@ -2,9 +2,13 @@ import { User } from './user';
 
 export class Message { 
 
-    constructor(private _sender: User, private _message: String, private _status: String) {}
+    constructor(private _channel: String, private _sender: String, private _message: String, private _status: String) {}
 
-    public get sender(): User {
+    public get channel(): String {
+        return this._channel;
+    }
+
+    public get sender(): String {
         return this._sender;
     }
 
