@@ -13,7 +13,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { AppGuardService } from './services/authentication-guard.service';
 import { ChatroomGuardService } from './services/authentication-guard.service';
 import { CreateChannelComponent } from './components/modals/create-channel.component';
-
+import { User } from './models/user';
+import { Channel } from './models/channel';
 
 
 @NgModule({
