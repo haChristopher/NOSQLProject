@@ -1,0 +1,10 @@
+CREATE DATABASE chat;
+
+USE chat;
+
+CREATE TABLE user (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50),
+  password TEXT,
+  reg_date TIMESTAMP
+)
