@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const http = require('http');
-var io = require('socket.io')(http);
 
 const app = express();
 
@@ -11,8 +10,13 @@ const app = express();
 const api = require('./server/routes/api');
 
 //start Socketserver
-var socketServer = require('./socketIoServer');
+var socketServer = require('./server/socketIoServer');
 socketServer.start();
+
+//start mysql connection
+var db = require("./server/mySqlDB.js");
+var connection_object= new db();
+var connection=connection_object.connection;
 
 // Parsers
 app.use(bodyParser.json());
