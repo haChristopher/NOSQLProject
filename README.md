@@ -5,19 +5,9 @@ Projekt für die Vorlesung NOSQL
 
 ## Installation
 
-### Server
+### Start
 
 ```
-cd server
-npm install
-npm start
-```
-
-
-### client
-
-```
-cd client
-npm install
-npm start
+ng buid --watch
+nodemon server.js
 ```
