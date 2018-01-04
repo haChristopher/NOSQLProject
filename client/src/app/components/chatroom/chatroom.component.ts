@@ -22,7 +22,7 @@ export class ChatroomComponent {
     constructor(private _authenticationService: AuthenticationService, private _restService: RestService) {}
 
     ngOnInit() {
-        this.socket = io('http://localhost:3000');
+        this.socket = io('http://localhost:8000');
         this.socket.on('message', function (data) {
             console.log(data);
             this.conversation.push(data);
