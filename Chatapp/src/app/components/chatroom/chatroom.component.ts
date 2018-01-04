@@ -29,18 +29,12 @@ export class ChatroomComponent {
         }.bind(this));
 
         this.channels = new Array();
-
-
-        let conversation: Array<Message> = [];
-        conversation.push(new Message(new User("Chrsitopher", "1111"), "Hey alles senkrecht?", "read"));
-        conversation.push(new Message(new User("Chrsitopher", "1111"), "Wurst?", "read"));
-        conversation.push(new Message(new User("Chrsitopher", "1111"), "Natürlicher Mergesort!", "read"));
-        conversation.push(new Message(new User("Hamid", "2222"), "Hallo Hasan Halloooooooooooooooooooooooooooooooooooooooooo", "read"));
-
-        this.channels.push(new Channel(1,"General",conversation,true));
-        this.channels.push(new Channel(2,"Public",conversation,true));
-
-
+        this._restService.getChannels().subscribe(data => {
+            for(let key in data){
+                let channel = data[key];
+                this.channels.push(new Channel(channel._id, channel.name, channel.conversation, channel.isPublic));
+            }
+        });
     }
 
     loadChannel(activeChannel: Channel) {
