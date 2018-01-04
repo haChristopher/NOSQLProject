@@ -23,6 +23,12 @@ function websocketConnect(socket){
   }
 }
 
+
+app.get('/', function (req, res) {
+  res.send('Hallo Hamid!');
+});
+
+
 // TODO do i need this ?
 http.listen(3000, function(){
   console.log('listening on *:3000');
