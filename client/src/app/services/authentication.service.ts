@@ -6,7 +6,8 @@ import { User } from '../models/user';
 export class AuthenticationService {
 
     private users = [
-        new User("admin", "admin")
+        new User("admin", "admin"),
+        new User("hamid", "hamid")
     ];
 
     public constructor(private _router: Router) { 

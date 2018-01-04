@@ -4,6 +4,7 @@ import * as io from "socket.io-client";
 import { Channel } from '../../models/channel';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
+import { AuthenticationService } from '../../services/authentication.service'
 
 @Component({
     moduleId: module.id,
@@ -16,6 +17,8 @@ export class ChatroomComponent {
     activeChannel: Channel;
     message: String = "";
     socket = null;
+
+    constructor(private _authenticationService: AuthenticationService) {}
 
     ngOnInit() {
         this.socket = io('http://localhost:3000');
@@ -52,6 +55,10 @@ export class ChatroomComponent {
         this.socket.emit('message', {
             'message': new Message(new User("Chrsitopher", "1111"), this.message, "read" )
         });
+    }
+
+    isOwnMessage(message: Message): boolean {
+        return true;
     }
 
     // send message on enter
