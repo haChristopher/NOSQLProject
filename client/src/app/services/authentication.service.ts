@@ -27,6 +27,11 @@ export class AuthenticationService {
         return false;
     }
 
+    public getUser(): User {
+        let user = JSON.parse(localStorage.getItem("user"));
+        return new User(user._username, user._password);
+    }
+
     public isLoggedIn(): boolean {
         return localStorage.getItem("user") != undefined || localStorage.getItem("user") != null;
     }

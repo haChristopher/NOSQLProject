@@ -4,7 +4,8 @@ import * as io from "socket.io-client";
 import { Channel } from '../../models/channel';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
-import { AuthenticationService } from '../../services/authentication.service'
+import { AuthenticationService } from '../../services/authentication.service';
+import { RestService } from '../../services/rest-service.service'
 
 @Component({
     moduleId: module.id,
@@ -18,7 +19,7 @@ export class ChatroomComponent {
     message: String = "";
     socket = null;
 
-    constructor(private _authenticationService: AuthenticationService) {}
+    constructor(private _authenticationService: AuthenticationService, private _restService: RestService) {}
 
     ngOnInit() {
         this.socket = io('http://localhost:3000');
@@ -58,7 +59,7 @@ export class ChatroomComponent {
     }
 
     isOwnMessage(message: Message): boolean {
-        return true;
+        return this._authenticationService.getUser().username.toLowerCase() == message.sender.username.toLowerCase();
     }
 
     // send message on enter
