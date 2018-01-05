@@ -39,7 +39,7 @@
             <span id="timeField"></span>
           </div>
 
-          <div class="col-xs-12" style="margin-top:-10px"><span [ngClass]="{'pull-left': !isOwnMessage(message), 'pull-right': isOwnMessage(message)}">{{message.creationDate | date: 'dd.MM.yyyy'}}</span></div>
+          <div class="col-xs-12" style="margin-top:-10px"><span [ngClass]="{'pull-left': !isOwnMessage(message), 'pull-right': isOwnMessage(message)}"><i class="fa fa-clock-o"></i> {{message.creationDate | date: 'dd.MM.yyyy'}} - {{message.creationDate | date: 'HH:mm'}}</span></div>
         </div>
       </div>
 

@@ -1,17 +1,18 @@
 <div id="wrapper">
-    <div id="header">
-      <a href="./home" class="logo"></a>
-      <div class="content">
-        <div class="inner">
-          <router-outlet></router-outlet>
-        </div>
+  <div id="header">
+    <a href="./home" class="logo"></a>
+    <div class="content">
+      <span *ngIf="isLoggedIn()" style="position: absolute; left: 0; top: -40px;">Eingeloggt als: {{username}}</span>
+      <div class="inner">
+        <router-outlet></router-outlet>
       </div>
-      <nav>
-        <ul>
-          <li *ngIf="!isLoggedIn()"><a [routerLink]="['login']">Einloggen</a></li>
-          <li *ngIf="!isLoggedIn()"><a [routerLink]="['register']">Registrieren</a></li>
-          <li *ngIf="isLoggedIn()"><a style="cursor:pointer" [routerLink]="['home']" (click)="logout()">Ausloggen</a></li>
-        </ul>
-      </nav>
     </div>
+    <nav>
+      <ul>
+        <li *ngIf="!isLoggedIn()"><a [routerLink]="['login']">Einloggen</a></li>
+        <li *ngIf="!isLoggedIn()"><a [routerLink]="['register']">Registrieren</a></li>
+        <li *ngIf="isLoggedIn()"><a style="cursor:pointer" [routerLink]="['home']" (click)="logout()">Ausloggen</a></li>
+      </ul>
+    </nav>
   </div>
+</div>
