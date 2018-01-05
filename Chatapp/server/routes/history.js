@@ -30,7 +30,6 @@ let response = {
 
 // Get Channels
 router.get('/channels', (req, res) => {
-    console.log(req.body)
     connection((db) => {
         db.collection('channels')
             .find({ "$or": [{ "participants": req.query.username }, { "isPublic": true }] })
@@ -48,7 +47,6 @@ router.get('/channels', (req, res) => {
 
 //Create Channel
 router.post('/channel', (req, res) => {
-    console.log(req.body)
     connection((db) => {
         db.collection('channels')
             .insert({ "name": req.body._name, "participants": req.body._participants, "conversation": req.body._conversation, "isPublic": req.body._isPublic })
@@ -64,7 +62,6 @@ router.post('/channel', (req, res) => {
 
 // Post Message
 router.post('/message', (req, res) => {
-    console.log(req.body)
     connection((db) => {
         db.collection('channels')
             .update({ "_id": ObjectID(req.body._channel) },

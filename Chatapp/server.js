@@ -6,17 +6,25 @@ const http = require('http');
 
 const app = express();
 
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'example.com');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+};
+
+app.use(allowCrossDomain);
+
+
 // API file for interacting with MongoDB
-const api = require('./server/routes/api');
+const history = require('./server/routes/history');
+const user = require('./server/routes/users');
 
 //start Socketserver
 var socketServer = require('./server/socketIoServer');
 socketServer.start();
-
-//start mysql connection
-var db = require("./server/mySqlDB.js");
-var connection_object= new db();
-var connection=connection_object.connection;
 
 // Parsers
 app.use(bodyParser.json());
@@ -26,7 +34,8 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // API location
-app.use('/api', api);
+app.use('/api', history);
+app.use('/api/sql', user);
 
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {
