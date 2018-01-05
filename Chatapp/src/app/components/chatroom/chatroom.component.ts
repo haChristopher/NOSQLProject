@@ -33,7 +33,7 @@ export class ChatroomComponent {
 
         this.getChannels();
         this.users = this._authenticationService.getUsers();
-        this.newUsers = JSON.parse(JSON.stringify(this._authenticationService.getUsers()));
+        this.newUsers = this._authenticationService.getUsers().slice(0);
     }
 
     getChannels() {
@@ -61,6 +61,8 @@ export class ChatroomComponent {
                         this.newUsers.splice(i, 1);
                     }
                 }
+
+                this.selectedUser = this.newUsers[0];
             }
         });
     }

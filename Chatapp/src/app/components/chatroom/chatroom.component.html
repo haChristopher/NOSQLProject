@@ -5,22 +5,24 @@
       <div class="row" id="public_channel">
         <label style="margin-bottom: 15px;">ÖFFENTLICH</label>
         <div *ngFor="let channel of channels">
-          <div *ngIf="channel.isPublic" [attr.id]="channel.name" (click)="loadChannel(channel)" class="chatroom_channel"><img class="pull-left chatroom_channel_image" /><label class="pull-left">&nbsp;&nbsp;{{channel.name}}</label>&nbsp;</div>
+          <div *ngIf="channel.isPublic" [attr.id]="channel.name" (click)="loadChannel(channel)" class="chatroom_channel"><i class="fa fa-users fa-2x"></i><label class="pull-left">&nbsp;&nbsp;{{channel.name}}</label>&nbsp;</div>
         </div>
       </div>
 
       <div class="row" id="private_channel">
         <label style="margin-bottom: 15px;">Privat <a><i *ngIf="!newUserBoxOpened" (click)="openNewUserBox()" class="fa fa-plus"></i><i *ngIf="newUserBoxOpened" (click)="closeNewUserBox()" class="fa fa-minus"></i></a></label>
 
-        <div>
+        <div *ngIf="newUserBoxOpened" style="padding-right:15px">
+          <i class="fa fa-bars" style="position:absolute; padding:15px; left:35%"></i>
+         
           <select [(ngModel)]="selectedUser" class="col-xs-6">
-          <option *ngFor="let user of newUsers" [ngValue]="user">{{user.username}}</option>
-        </select>
-          <button (click)="createChannel()" style="margin-bottom:10px" class="col-xs-6 btn waves-effect waves-light s2">Hinzufügen</button>
+            <option *ngFor="let user of newUsers" [ngValue]="user">{{user.username}}</option>
+          </select>
+          <button (click)="createChannel()" style="margin-bottom:10px" class="col-xs-6 btn-default btn waves-effect waves-light s2">Hinzufügen</button>
         </div>
 
         <div *ngFor="let channel of channels">
-          <div *ngIf="!channel.isPublic" [attr.id]="channel.name" (click)="loadChannel(channel)" class="chatroom_channel"><img class="pull-left chatroom_channel_image" /><label class="pull-left">&nbsp;&nbsp;{{channel.name}}</label>&nbsp;</div>
+          <div *ngIf="!channel.isPublic" [attr.id]="channel.name" (click)="loadChannel(channel)" class="chatroom_channel"><i class="fa fa-user fa-2x"></i><label class="pull-left">&nbsp;&nbsp;{{channel.name}}</label>&nbsp;</div>
         </div>
       </div>
 
@@ -41,8 +43,8 @@
 
       <div class="row" style="height:10%">
         <input placeholder="Schreibe eine Nachricht..." [(ngModel)]="message" (keypress)="keypressHandler($event)" class="col-xs-10"
-          id="chatroom_chat_input" />
-        <button (click)="send()" type="submit" class="col-xs-2 btn waves-effect waves-light s2" style="height:100%" name="action">Senden</button>
+          id="chatroom_chat_input" [disabled]="!activeChannel"/>
+        <button (click)="send()" type="submit" class="col-xs-2 btn waves-effect waves-light s2" style="height:100%" name="action" [disabled]="!activeChannel">Senden</button>
       </div>
     </div>
 
