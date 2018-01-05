@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 var mysql = require('mysql');
 var config = require('config'); 
-var SHA256 = require("crypto-js/sha256");
 var crypto = require('crypto');
 
 

@@ -4,21 +4,22 @@ const router = express.Router();
 var rabbitConn = require('../connections/rabbitmq');
 
 
-router.post('/chat', (req, res) => {
+router.post('/chat', function(req, res) {
     rabbitConn(function(conn) {
-    res._rabbitConn.createChannel(function(err, ch) {
+      conn.createChannel(function(err, ch) {
         if (err) {
           throw new Error(err);
         }
-
-        var q = 'chat';
+        var ex = 'chat_ex';
         var msg = JSON.stringify(req.body);
 
-        ch.assertQueue(q, {durable: false});
-        ch.sendToQueue(q, new Buffer(msg));
-        res.send({success: true, sent: req.body});
+        ch.assertExchange(ex, 'fanout', {durable: false});
+        ch.publish(ex, '', new Buffer(msg), {persistent: false});
+        ch.close(function() {
+          conn.close();
+        });
+      });
     });
   });
-});
 
 module.exports = router;
