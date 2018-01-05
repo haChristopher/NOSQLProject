@@ -12,7 +12,7 @@
       <div class="row" id="private_channel">
         <label style="margin-bottom: 15px;">Privat <a><i *ngIf="!newUserBoxOpened" (click)="openNewUserBox()" class="fa fa-plus"></i><i *ngIf="newUserBoxOpened" (click)="closeNewUserBox()" class="fa fa-minus"></i></a></label>
 
-        <div *ngIf="newUserBoxOpened">
+        <div>
           <select [(ngModel)]="selectedUser" class="col-xs-6">
           <option *ngFor="let user of newUsers" [ngValue]="user">{{user.username}}</option>
         </select>

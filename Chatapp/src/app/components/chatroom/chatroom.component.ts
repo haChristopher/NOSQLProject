@@ -32,6 +32,8 @@ export class ChatroomComponent {
         }.bind(this));
 
         this.getChannels();
+        this.users = this._authenticationService.getUsers();
+        this.newUsers = JSON.parse(JSON.stringify(this._authenticationService.getUsers()));
     }
 
     getChannels() {
@@ -52,28 +54,13 @@ export class ChatroomComponent {
                     }
                 }
 
-                console.log(channel)
-
                 this.channels.push(new Channel(channel._id, channel.name, channel.participants, conversation, channel.isPublic));
 
-                this.users = this._authenticationService.getUsers();
-                this.newUsers = new Array<User>();
-
-                var exists = false;
-                
-                for (let user of this.users) {
-                    for (let channel of this.channels) {
-
-                        if (user.username == this._authenticationService.getUser().username || user.username == channel.name) {
-                            exists = true;
-                        }
-                    }
-
-                    if (!exists) {
-                        this.newUsers.push(user);
+                for(let i = 0; i < this.newUsers.length; i++){
+                    if(channel.name == this.newUsers[i].username || this._authenticationService.getUser().username == this.newUsers[i].username){
+                        this.newUsers.splice(i, 1);
                     }
                 }
-                this.selectedUser = this.newUsers[0];
             }
         });
     }
