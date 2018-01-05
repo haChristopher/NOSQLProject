@@ -21,9 +21,13 @@ app.use(allowCrossDomain);
 // API file for interacting with MongoDB
 const history = require('./server/routes/history');
 const user = require('./server/routes/users');
+const messages = require('./server/routes/messages');
+
+//rabbitmq
+var rabbitmq = require('./server/connections/rabbitmq');
 
 //start Socketserver
-var socketServer = require('./server/socketIoServer');
+var socketServer = require('./server/connections/socketIoServer');
 socketServer.start();
 
 // Parsers
@@ -36,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // API location
 app.use('/api', history);
 app.use('/api/sql', user);
+app.use('/api/messages', messages);
 
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {
