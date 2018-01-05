@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { RestService } from '../services/rest-service.service'
+
 
 @Injectable()
 export class AuthenticationService {
@@ -12,25 +14,33 @@ export class AuthenticationService {
         new User("thaer", "hamid"),
     ];
 
-    public getUsers(): User[]{
+    public getUsers(): User[] {
         return this.users;
     }
 
-    public constructor(private _router: Router) { 
-
-    }
+    public constructor(private _router: Router, private _restService: RestService) { }
 
     public logout() {
         localStorage.removeItem("user");
     }
 
-    public login(user) {
-        let authenticatedUser = this.users.find(u => u.username === user.username);
-        if (authenticatedUser && authenticatedUser.password === user.password) {
-            localStorage.setItem("user", JSON.stringify(authenticatedUser));
-            return true;
-        }
-        return false;
+    public login(user: User) {
+        let authenticatedUser;
+
+        this._restService.checkIfUserExists(user).subscribe(
+            data => {
+                console.log(data)
+                if (data.status) {
+                    authenticatedUser = user;
+
+                    localStorage.setItem("user", JSON.stringify(authenticatedUser));
+                    this._router.navigate(["/chatroom"]);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        );
     }
 
     public getUser(): User {

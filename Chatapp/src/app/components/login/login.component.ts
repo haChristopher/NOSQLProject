@@ -19,7 +19,7 @@ export class LoginComponent {
 
     private login() {
         if (!this._service.login(new User(this.username, this.password))) {
-            this.error = !this.error;
+            this.error = true;
         } else {
             this._router.navigate(["chatroom"]);
         }

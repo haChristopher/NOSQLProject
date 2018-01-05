@@ -14,6 +14,10 @@ export class RestService {
 
     constructor(private http: Http) { }
 
+    public checkIfUserExists(user: User){
+        return this.post("/api/sql/user" , user);
+    }
+
     public getChannels(username: String) {
         return this.get("/api/channels?username=" + username);
     }
@@ -24,6 +28,10 @@ export class RestService {
 
     public writeMessage(message: Message) {
         return this.post("/api/message", message);
+    }
+
+    public createUser(user: User){
+        return this.post("/api/sql/user" , user);
     }
 
     private get(path: string): Observable<any> {
