@@ -7,6 +7,8 @@ import { AuthenticationService } from '../services/authentication.service'
 })
 export class AppComponent {
 
+  username: String = "eefda";
+
   public constructor(private _authenticationService: AuthenticationService) { }
 
   private isLoggedIn() {

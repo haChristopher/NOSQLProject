@@ -18,6 +18,10 @@ export class RestService {
         return this.post("/api/sql/user" , user);
     }
 
+    public getUsers() {
+        return this.get("/api/sql/user/all");
+    }
+
     public getChannels(username: String) {
         return this.get("/api/channels?username=" + username);
     }
@@ -31,7 +35,7 @@ export class RestService {
     }
 
     public createUser(user: User){
-        return this.post("/api/sql/user" , user);
+        return this.post("/api/sql/user/new" , user);
     }
 
     private get(path: string): Observable<any> {

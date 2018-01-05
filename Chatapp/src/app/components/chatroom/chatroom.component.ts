@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CreateChannelComponent } from '../modals/create-channel.component';
 import * as io from "socket.io-client";
 import { Channel } from '../../models/channel';
 import { Message } from '../../models/message';
@@ -15,8 +14,8 @@ import { RestService } from '../../services/rest-service.service'
 })
 export class ChatroomComponent {
     selectedUser: User;
-    users: User[];
-    newUsers: User[];
+    users: User[] = new Array<User>();
+    newUsers: User[] = new Array<User>();
     channels: Channel[];
     activeChannel: Channel;
     message: String = "";
@@ -32,8 +31,6 @@ export class ChatroomComponent {
         }.bind(this));
 
         this.getChannels();
-        this.users = this._authenticationService.getUsers();
-        this.newUsers = this._authenticationService.getUsers().slice(0);
     }
 
     getChannels() {
@@ -55,16 +52,31 @@ export class ChatroomComponent {
                 }
 
                 this.channels.push(new Channel(channel._id, channel.name, channel.participants, conversation, channel.isPublic));
-
-                for(let i = 0; i < this.newUsers.length; i++){
-                    if(channel.name == this.newUsers[i].username || this._authenticationService.getUser().username == this.newUsers[i].username){
-                        this.newUsers.splice(i, 1);
-                    }
-                }
-
-                this.selectedUser = this.newUsers[0];
+                this.filterUsers();
             }
         });
+    }
+
+    getUsers() {
+        this._restService.getUsers().subscribe(
+            data => {
+                this.users = data;
+                this.newUsers = data.slice(0);
+                this.filterUsers();
+            }
+        );
+    }
+
+    filterUsers() {
+        for (let i = 0; i < this.newUsers.length; i++) {
+            for (let channel of this.channels) {
+                if (channel.name == this.newUsers[i].username || this._authenticationService.getUser().username == this.newUsers[i].username) {
+                    this.newUsers.splice(i, 1);
+                }
+            }
+        }
+
+        this.selectedUser = this.newUsers[0];
     }
 
     loadChannel(activeChannel: Channel) {
@@ -82,7 +94,11 @@ export class ChatroomComponent {
         participants.push(this._authenticationService.getUser().username);
         let channel = new Channel("", "", participants, [], false);
 
-        this._restService.createChannel(channel).subscribe(data => this.getChannels());
+        this._restService.createChannel(channel).subscribe(
+            data => { 
+                this.getChannels() ;
+                this.getUsers();
+            });
     }
 
     send() {
@@ -102,6 +118,7 @@ export class ChatroomComponent {
     }
 
     openNewUserBox() {
+        this.getUsers();
         this.newUserBoxOpened = true;
     }
 

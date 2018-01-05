@@ -2,31 +2,42 @@
 const express = require('express');
 const router = express.Router();
 var mysql = require('mysql');
-var config = require('config');
-//var SHA256 = require("crypto-js/sha256");
+var config = require('config'); 
+var SHA256 = require("crypto-js/sha256");
+var crypto = require('crypto');
 
 
 var connection = mysql.createConnection(config.database.sqldbConfig);
 
 connection.connect();
 
+// Response handling
+let response = {
+    status: 200,
+    data: [],
+    message: null
+};
+
 
 /* get all users from database */
-router.get('/users', function (req, res) {
-    connection.query('SELECT username FROM user', function (error, results) {
+router.get('/user/all', function (req, res) {
+    connection.query('SELECT * FROM user', function (error, results) {
         if (error) {
             throw error;
         } else {
-            res.json(results);
+            response.data = results;
+            res.json(response);
         }
     });
 });
 
 /* check if user exists in database */
 router.post('/user', function (req, res) {
-    console.log(req.body)
-    connection.query('SELECT username FROM user WHERE user.username = ' + mysql.escape(req.body._username) +
-        ' AND user.password = ' + mysql.escape(req.body._password) + ' LIMIT 1',
+    var username = req.body._username;
+    var password = crypto.createHash('md5').update(req.body._password).digest('hex');
+
+    connection.query('SELECT username FROM user WHERE user.username = ' + mysql.escape(username) +
+        ' AND user.password = ' + mysql.escape(password) + ' LIMIT 1',
         function (error, getResult) {
             if (error) {
                 throw error;
@@ -45,16 +56,11 @@ router.post('/user', function (req, res) {
         });
 });
 
-router.post('/user', function (req, res) {
+router.post('/user/new', function (req, res) {
     var username = req.body._username;
-    var password = req.body._password;
-
-    console.log("ok");
-    console.log(username);
-    console.log(password);
+    var password = crypto.createHash('md5').update(req.body._password).digest('hex');
 
     if (!username || username.length == 0 || !password || password.length == 0) {
-        console.log("hier")
         res.json({
             status: false,
             message: "Unvollständige Angaben"
