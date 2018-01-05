@@ -2,7 +2,7 @@ import { User } from './user';
 
 export class Message { 
 
-    constructor(private _channel: String, private _sender: String, private _message: String, private _status: String) {}
+    constructor(private _channel: String, private _sender: String, private _message: String, private _status: String, private _creationDate : Date) {}
 
     public get channel(): String {
         return this._channel;
@@ -18,5 +18,9 @@ export class Message {
 
     public get status() : String {
         return this._status;
+    }
+
+    public get creationDate() : Date {
+        return this._creationDate;
     }
 }

@@ -5,6 +5,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Channel } from '../models/channel';
+import { User } from '../models/user';
 import { Message } from '../models/message'
 
 
@@ -13,8 +14,12 @@ export class RestService {
 
     constructor(private http: Http) { }
 
-    public getChannels() {
-        return this.get("/api/channels");
+    public getChannels(username: String) {
+        return this.get("/api/channels?username=" + username);
+    }
+
+    public createChannel(channel: Channel) {
+        return this.post("/api/channel", channel);
     }
 
     public writeMessage(message: Message) {

@@ -1,8 +1,8 @@
-import {Message} from './message'
+import { Message } from './message'
 
 export class Channel {
 
-    constructor(private _id: String, private _name: string, private _conversation: Message[], private _isPublic: boolean) {}
+    constructor(private _id: String, private _name: string, private _participants: String[], private _conversation: Message[], private _isPublic: boolean) { }
 
     public get id() {
         return this._id;
@@ -12,12 +12,19 @@ export class Channel {
         return this._name;
     }
 
+    public set name(name: string) {
+        this._name = name;
+    }
+
+    public get participants() {
+        return this._participants;
+    }
+
     public get conversation() {
         return this._conversation;
     }
 
-    public get isPublic(){
+    public get isPublic() {
         return this._isPublic;
     }
 }
-    

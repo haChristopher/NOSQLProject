@@ -9,8 +9,9 @@ function db() {
 	*/
 	var con = mysql.createPool({
 		host : 'localhost',
-	  	user : 'root',
-	  	password : 'root',
+		  user : 'root',
+		  port: '1521',
+	  	password : 'qq11ww22!!!',
 			database : 'chat'
 	});
 	this.connection=con;

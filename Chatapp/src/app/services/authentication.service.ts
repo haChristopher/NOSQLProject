@@ -7,8 +7,14 @@ export class AuthenticationService {
 
     private users = [
         new User("admin", "admin"),
-        new User("hamid", "hamid")
+        new User("hamid", "hamid"),
+        new User("chris", "hamid"),
+        new User("thaer", "hamid"),
     ];
+
+    public getUsers(): User[]{
+        return this.users;
+    }
 
     public constructor(private _router: Router) { 
 

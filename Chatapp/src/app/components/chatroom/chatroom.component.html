@@ -10,7 +10,15 @@
       </div>
 
       <div class="row" id="private_channel">
-        <label style="margin-bottom: 15px;">Privat</label>
+        <label style="margin-bottom: 15px;">Privat <a><i *ngIf="!newUserBoxOpened" (click)="openNewUserBox()" class="fa fa-plus"></i><i *ngIf="newUserBoxOpened" (click)="closeNewUserBox()" class="fa fa-minus"></i></a></label>
+
+        <div *ngIf="newUserBoxOpened">
+          <select [(ngModel)]="selectedUser" class="col-xs-6">
+          <option *ngFor="let user of newUsers" [ngValue]="user">{{user.username}}</option>
+        </select>
+          <button (click)="createChannel()" style="margin-bottom:10px" class="col-xs-6 btn waves-effect waves-light s2">Hinzufügen</button>
+        </div>
+
         <div *ngFor="let channel of channels">
           <div *ngIf="!channel.isPublic" [attr.id]="channel.name" (click)="loadChannel(channel)" class="chatroom_channel"><img class="pull-left chatroom_channel_image" /><label class="pull-left">&nbsp;&nbsp;{{channel.name}}</label>&nbsp;</div>
         </div>
@@ -21,10 +29,12 @@
     <div class="col-xs-8" id="chatroom_chat">
       <div id="conversation" class="row" style="height:90%">
         <label style="margin-top:15px">{{activeChannel?.name}}</label>
-        <div *ngFor="let message of activeChannel?.conversation" [ngClass]="{'col-xs-6': true, 'pull-left': !isOwnMessage(message), 'pull-right': isOwnMessage(message)}" id="chatroom_chat_messages">
+        <div *ngFor="let message of activeChannel?.conversation" [ngClass]="{'col-xs-6': true, 'pull-left': !isOwnMessage(message), 'pull-right': isOwnMessage(message)}"
+          id="chatroom_chat_messages">
           <span *ngIf="isOwnMessage(message) && message.status == 'read'" class="fa fa-check"></span>
+          <span>{{message.creationDate | date: 'dd.MM.yyyy'}}</span>
           <span id="userfield" style="font-weight:bold">{{message.sender}}</span>
-          <span id="messsagefield" >{{message.message}}</span>
+          <span id="messsagefield">{{message.message}}</span>
           <span id="timeField"></span>
         </div>
       </div>
