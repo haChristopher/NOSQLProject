@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 var mysql = require('mysql');
-var config = require('config'); 
+var config = require('config');
 var crypto = require('crypto');
 
 
@@ -40,7 +40,6 @@ router.post('/user', function (req, res) {
         function (error, getResult) {
             if (error) {
                 throw error;
-                res.json(error);
             }
 
             if (getResult.length > 0) {
@@ -75,7 +74,6 @@ router.post('/user/new', function (req, res) {
                 connection.query('INSERT INTO user SET ?', { "username": username, "password": password }, function (error, writeResult) {
                     if (error) {
                         throw error;
-                        res.json(error);
                     }
                     if (writeResult.affectedRows > 0) {
                         res.json({
@@ -84,7 +82,7 @@ router.post('/user/new', function (req, res) {
                     } else {
                         res.json({
                             status: false
-                        })
+                        });
                     }
                 });
             }
