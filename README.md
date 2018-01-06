@@ -5,9 +5,9 @@ Projekt für die Vorlesung NOSQL
 
 ## Installation
 
-### Start
 
+### Start
 ```
 ng buid --watch
-nodemon server.js
+nodemon app.js
 ```
