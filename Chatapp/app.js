@@ -51,6 +51,7 @@ app.use('/api/sql', user);
 // Also create Session
 app.get('*', (req, res) => {
   //req.session.key=req.body.email;
+  //TODO
   console.log("session created");
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });

@@ -5,9 +5,6 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var rabbitConn = require('./rabbitmq');
 
-rabbitConn(function(conn) {
-    chatExchange = conn.createChannel(function(err, ch) {});
-});
 
 var chat = {
 	start: function(){
@@ -15,6 +12,9 @@ var chat = {
 		io.set("origins", "*:*");
 
 		io.on('connection', function (socket) {
+
+      rabbitConn.setupUser("chris", processMessage);
+
 			console.log('Socket connected');
       socket.on('disconnect', socketDisconnect);
       //socket.on('message', socketMessage);
@@ -34,16 +34,7 @@ var chat = {
 
 		//on chat message publish to queue
 		function chat(msg){
-			//var msg = JSON.parse(data);
-			var reply = {username: msg.sender, message: msg.message , channel: msg.channel, creationDate: msg.creationDate};
-			var q = msg.channel;
-			chatExchange.assertQueue(q, {durable: false});
-
-
-			chatExchange.consume(q, processMessage, {noAck: true});
-
-		 	// Note: on Node 6 Buffer.from(msg) should be used
-		 	chatExchange.sendToQueue(q, new Buffer(JSON.stringify(reply)));
+      rabbitConn.sendMessage(msg);
 		 	console.log("Nachricht wurde gesendet");
 		}
 
