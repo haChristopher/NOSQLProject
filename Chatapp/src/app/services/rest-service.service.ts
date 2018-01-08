@@ -47,7 +47,7 @@ export class RestService {
     }
 
     private get(path: string): Observable<any> {
-        path = "http://141.19.152.57:3000" + path;
+        path = "http://localhost:3000" + path;
         return this.http.get(path)
             .map(response => response.json().data)
             .catch(this.handleError);
