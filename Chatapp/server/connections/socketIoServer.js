@@ -40,7 +40,7 @@ var chat = {
 
     function login(msg){
       //setup rabbitmq
-      var user = JSON.parse(msg.user);
+      var user = msg.user;
       rabbitConn.setupUser(user._username, processMessage, this);
     }
 

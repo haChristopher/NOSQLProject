@@ -7,10 +7,13 @@ import { RestService } from '../services/rest-service.service'
 @Injectable()
 export class AuthenticationService {
 
+    private loggedIn: boolean = false;
+    private user: User;
+
     public constructor(private _router: Router, private _restService: RestService) { }
 
     public logout() {
-        localStorage.removeItem("user");
+        this.loggedIn = false;
     }
 
     public login(user: User) {
@@ -19,9 +22,9 @@ export class AuthenticationService {
             data => {
                 console.log(data);
                 if (data.status) {
-                    authenticatedUser = user;
+                    this.user = user;
                     this._restService.afterLogin(user).subscribe();
-                    localStorage.setItem("user", JSON.stringify(authenticatedUser));
+                    this.loggedIn = true;
                     this._router.navigate(["/chatroom"]);
                     return true;
                 } else {
@@ -32,11 +35,10 @@ export class AuthenticationService {
     }
 
     public getUser(): User {
-        let user = JSON.parse(localStorage.getItem("user"));
-        return new User(user._username, user._password);
+        return this.user;
     }
 
     public isLoggedIn(): boolean {
-        return localStorage.getItem("user") != undefined || localStorage.getItem("user") != null;
+        return this.loggedIn;
     }
 }

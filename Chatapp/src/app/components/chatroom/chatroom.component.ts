@@ -26,8 +26,8 @@ export class ChatroomComponent {
     constructor(private _authenticationService: AuthenticationService, private _restService: RestService) { }
 
     ngOnInit() {
-        this.socket = io('http://141.19.152.57:8000');
-        this.socket.emit('login',{user: localStorage.getItem("user")});
+        this.socket = io('http://localhost:8000');
+        this.socket.emit('login',{user: this._authenticationService.getUser()});
 
         this.socket.on('message', function (message) {
 
