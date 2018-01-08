@@ -4,7 +4,7 @@ const router = express.Router();
 var mysql = require('mysql');
 var config = require('config');
 var crypto = require('crypto');
-
+var rabbitConn = require('../connections/rabbitmq');
 
 var connection = mysql.createConnection(config.database.sqldbConfig);
 
@@ -43,10 +43,15 @@ router.post('/user', function (req, res) {
             }
 
             if (getResult.length > 0) {
-                res.json({
-                    status: true
-                });
+                //save informations in Session
+                req.session.key = username;
+                req.session.loggedin = true;
+                req.session.save();
+                console.log(req.session.loggedin);
+                res.json({status: true});
             } else {
+
+                req.session.loggedin = false;
                 res.json({
                     status: false
                 });

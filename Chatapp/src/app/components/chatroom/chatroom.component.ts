@@ -25,7 +25,8 @@ export class ChatroomComponent {
     constructor(private _authenticationService: AuthenticationService, private _restService: RestService) { }
 
     ngOnInit() {
-        this.socket = io('http://localhost:8000');
+        this.socket = io('http://141.19.152.57:8000');
+        this.socket.emit('login',{user: localStorage.getItem("user")});
         this.socket.on('message', function (message) {
             this.activeChannel.conversation.push(new Message(message.channel, message.username, message.message, message.status, message.creationDate));
         }.bind(this));
@@ -95,7 +96,7 @@ export class ChatroomComponent {
         let channel = new Channel("", "", participants, [], false);
 
         this._restService.createChannel(channel).subscribe(
-            data => { 
+            data => {
                 this.getChannels() ;
                 this.getUsers();
             });
@@ -115,6 +116,12 @@ export class ChatroomComponent {
         this._restService.writeMessage(message).subscribe(data => console.log(data));
 
         this.message = "";
+        this.updateScroll();
+    }
+
+    updateScroll(){
+      var element = document.getElementById("conversation");
+      element.scrollTop = element.scrollHeight;
     }
 
     openNewUserBox() {

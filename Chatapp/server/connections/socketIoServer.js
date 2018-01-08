@@ -13,18 +13,18 @@ var chat = {
 
 		io.on('connection', function (socket) {
 
-      rabbitConn.setupUser("chris", processMessage);
-
 			console.log('Socket connected');
       socket.on('disconnect', socketDisconnect);
       //socket.on('message', socketMessage);
 			socket.on('message', chat);
+      socket.on('login', login);
 		});
 
     function socketDisconnect(e){
       console.log('Socket Disconnected ', e);
     }
 
+    //TODO remove
     function socketMessage(msg){
       // emit sends messages from the server to the connected sockes
       // the broadcast.emit function is a good idea for the channels
@@ -38,8 +38,15 @@ var chat = {
 		 	console.log("Nachricht wurde gesendet");
 		}
 
+    function login(msg){
+      //setup rabbitmq
+      var user = JSON.parse(msg.user);
+      rabbitConn.setupUser(user._username, processMessage, this.socket);
+    }
+
 		function processMessage(message){
 			msg = message.content.toString('utf8');
+      console.log("Message was recieved now :D wuhuuuuu");
 			io.emit('message', JSON.parse(msg));
 		}
 

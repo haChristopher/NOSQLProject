@@ -15,13 +15,12 @@ export class AuthenticationService {
 
     public login(user: User) {
         let authenticatedUser;
-
         this._restService.checkIfUserExists(user).subscribe(
             data => {
-                console.log(data)
+                console.log(data);
                 if (data.status) {
                     authenticatedUser = user;
-
+                    this._restService.afterLogin(user).subscribe();
                     localStorage.setItem("user", JSON.stringify(authenticatedUser));
                     this._router.navigate(["/chatroom"]);
                     return true;

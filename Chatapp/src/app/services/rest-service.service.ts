@@ -18,6 +18,14 @@ export class RestService {
         return this.post("/api/sql/user" , user);
     }
 
+    public afterLogin(user: User){
+        return this.post("/afterlogin", user);
+    }
+
+    public logout(){
+        return this.get("/logout");
+    }
+
     public getUsers() {
         return this.get("/api/sql/user/all");
     }
@@ -39,7 +47,7 @@ export class RestService {
     }
 
     private get(path: string): Observable<any> {
-        path = "http://localhost:3000" + path;
+        path = "http://141.19.152.57:3000" + path;
         return this.http.get(path)
             .map(response => response.json().data)
             .catch(this.handleError);
