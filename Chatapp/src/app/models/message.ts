@@ -1,6 +1,6 @@
 import { User } from './user';
 
-export class Message { 
+export class Message {
 
     constructor(private _channel: String, private _sender: String, private _message: String, private _status: String, private _creationDate : Date) {}
 
@@ -18,6 +18,10 @@ export class Message {
 
     public get status() : String {
         return this._status;
+    }
+
+    public set status(status: String){
+        this._status = status;
     }
 
     public get creationDate() : Date {

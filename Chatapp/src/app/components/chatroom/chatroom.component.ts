@@ -21,17 +21,59 @@ export class ChatroomComponent {
     message: String = "";
     newUserBoxOpened: Boolean = false;
     socket = null;
+    newMessages : Message[] = new Array<Message>();
 
     constructor(private _authenticationService: AuthenticationService, private _restService: RestService) { }
 
     ngOnInit() {
         this.socket = io('http://141.19.152.57:8000');
         this.socket.emit('login',{user: localStorage.getItem("user")});
+
         this.socket.on('message', function (message) {
-            this.activeChannel.conversation.push(new Message(message.channel, message.username, message.message, message.status, message.creationDate));
-        }.bind(this));
+
+          let newMessage = new Message(message.channel, message.sender, message.message, message.status, message.creationDate);
+          this.newMessages.push(newMessage);
+
+          let messageToPush;
+
+            for(let channel of this.channels) {
+              if(channel.id == newMessage.channel) {
+
+                let exists = false;
+
+                for(let message of channel.conversation){
+
+                  if(new Date(message.creationDate).getTime() == new Date(newMessage.creationDate).getTime()){
+                    exists = true;
+
+                    if(newMessage.status == "read") {
+                      message.status = "read";
+                    }
+                  }
+
+                }
+
+                if(newMessage.status == "unread" && !exists) {
+                    channel.conversation.push(newMessage);
+                }
+            }
+
+
+
+          }
+
+
+
+
+        this.updateChannels();
+
+      }.bind(this));
 
         this.getChannels();
+    }
+
+    updateChannels() {
+
     }
 
     getChannels() {
@@ -104,14 +146,18 @@ export class ChatroomComponent {
 
     send() {
         let message = new Message(this.activeChannel.id, this._authenticationService.getUser().username, this.message, "unread", new Date());
-
         this.socket.emit('message', {
             'sender': message.sender,
+            'recipient': this.activeChannel.name,
+            'isPublic': this.activeChannel.isPublic,
             'message': message.message,
             'channel': message.channel,
             'status': message.status,
             'creationDate': message.creationDate
         });
+
+        this.activeChannel.conversation.push(message);
+
 
         this._restService.writeMessage(message).subscribe(data => console.log(data));
 

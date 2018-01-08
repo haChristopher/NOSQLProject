@@ -34,18 +34,22 @@ var chat = {
 
 		//on chat message publish to queue
 		function chat(msg){
-      rabbitConn.sendMessage(msg);
+      rabbitConn.sendMessage(msg, false);
 		 	console.log("Nachricht wurde gesendet");
 		}
 
     function login(msg){
       //setup rabbitmq
       var user = JSON.parse(msg.user);
-      rabbitConn.setupUser(user._username, processMessage, this.socket);
+      rabbitConn.setupUser(user._username, processMessage, this);
     }
 
 		function processMessage(message){
-			msg = message.content.toString('utf8');
+      msgAck = JSON.parse(message.content);
+      if(msgAck.status != "read" && !msgAck.isPublic){
+        rabbitConn.sendMessage(msgAck, true);
+      }
+      msg = message.content.toString('utf8');
       console.log("Message was recieved now :D wuhuuuuu");
 			io.emit('message', JSON.parse(msg));
 		}
